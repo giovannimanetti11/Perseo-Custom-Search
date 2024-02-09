@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Poppins:wght@600&display=swap');
+
+#custom-search {
+    width: 100%;
+	min-width: 800px;
+	font-family: 'Libre Franklin', sans-serif;
+}
+
+#custom-search form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 600px;
+    background-color: #f9f9f9;
+	border: 1px solid #be1823;
+    box-shadow: 0 4px 8px rgba(190, 24, 35, 0.2);
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+#category-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#category-checkboxes {
+	accent-color: #be1823;
+	margin-bottom: 20px;
+}
+
+#category-checkboxes label {
+    display: flex;
+    align-items: center;
+    color: #000;
+    padding: 0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#category-checkboxes input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+#custom-search input[type="text"] {
+	min-width: 300px;
+}
+
+#custom-search input[type="text"],
+#custom-search select,
+#custom-search button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#custom-search input[type="text"]:focus,
+#custom-search select:focus {
+	border: 1px solid #be1823;
+	outline: none;
+}
+
+#custom-search button {
+    background-color: #189347;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#custom-search button:hover {
+    opacity: 0.8;
+}
+
+#search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: start;
+    padding-top: 20px;
+}
+
+.search-result-item p {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px; 
+    text-align: center;
+	font-family: 'Poppins', sans-serif;
+}
+
+.search-result-item {
+    flex-basis: calc(50% - 20px);
+    text-decoration: none;
+    color: inherit;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(190, 24, 35, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.search-result-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 10px rgba(0,0,0,0.15);
+}
+
+.search-result-item img {
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+.alert {
+    padding: 0 20px;
+    background-color: #be1823;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    display: none; 
+}
+
+.alert.success {background-color: #4CAF50;} 
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;} 
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+#pagination-container {
+    display: none;
+	text-align: center;
+}
+
+#pagination-container.active {
+    display: block; 
+}
+
+.pagination-link {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #be1823;
+	font-weight: bold;
+}
+
+.pagination-link:hover {
+    color: #940000;
+	cursor: pointer;
+}
+
+.pagination-link.active {
+    color: #940000; 
+}
+
+@media only screen and (max-width: 1024px) {
+	
+	#pagination-container {
+        display: none !important;
+    }
+	
+	#custom-search {
+		min-width: 300px !important;
+	}
+
+    #custom-search form {
+        padding: 10px !important;
+        margin: 10px auto !important;
+        width: 100%;
+        max-width: 90% !important;
+		min-width: 90% !important;
+        font-size: 25px;
+    }
+
+    #custom-search-form fieldset {
+        display: flex;
+        flex-direction: column;
+    }
+	
+	#custom-search input[type="text"] {
+		min-width: 150px;
+	}
+
+    #custom-search input[type="text"], #custom-search select, #custom-search button, #custom-search-form fieldset label {
+        margin-bottom: 10px;
+    }
+
+    #category-checkboxes label {
+        padding: 0; 
+		margin-bottom: 0 !important;
+    }
+	
+	.search-result-item {
+        flex-basis: 100%;
+    }
+
+    #category-checkboxes {
+        flex-direction: column;
+		margin-bottom: 20px;
+		font-size: 20px;
+    }
+
+    .search-result-item p {
+        font-size: 16px; 
+    }
+	
+	#alert-msg {
+		font-size: 20px;
+	}
+}
+
