@@ -32,6 +32,26 @@ document.addEventListener('DOMContentLoaded', function() {
 					label.innerHTML = `<input type="checkbox" name="category[]" value="${catId}"> ${catName}`;
 					categoriesContainer.appendChild(label);
 				});
+                
+                console.log("Preparazione per inserire i tag", t.tags);
+
+                if (t.tags && Array.isArray(t.tags)) {
+                    const tagsContainer = document.getElementById('tag-select-container');
+                    if (!tagsContainer) {
+                        console.error("Container dei tag non trovato.");
+                        return;
+                    }
+                    let selectHTML = '<select id="tag-select" name="tags[]" multiple>';
+                    t.tags.forEach(tag => {
+                        selectHTML += `<option value="${tag.id}">${tag.name}</option>`;
+                    });
+                    selectHTML += '</select>';
+                    tagsContainer.innerHTML = selectHTML;
+                    console.log("Tag inseriti con successo.");
+                } else {
+                    console.log("Nessun tag da inserire.");
+                }
+
             }
         })
         .catch(error => {
@@ -103,6 +123,12 @@ document.addEventListener('DOMContentLoaded', function() {
             showAlert('genericErrorMsg');
         });
     }
+
+    document.querySelectorAll('.closebtn').forEach(function(closeButton) {
+        closeButton.addEventListener('click', function() {
+            this.parentElement.style.display = 'none';
+        });
+    });
 
     function showAlert(messageKey) {
     const message = window.translations[messageKey] || window.translations['genericErrorMsg'];
