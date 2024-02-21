@@ -2,10 +2,11 @@
 
 ## Description
 
-Perseo Custom Search is an open-source WordPress plugin that enhances search functionality on WordPress sites. It allows users to perform custom searches filtering by categories and keywords within sections identified by specific IDs. 
-The plugin dynamically fetches and updates placeholders and categories via AJAX, providing a flexible and user-friendly search experience.
+Perseo Custom Search is a minimalistic and open-source WordPress plugin designed to enhance the search experience on WordPress websites. This plugin allows users to perform searches by filtering categories, tags, and specific keywords. A distinctive feature of Perseo Custom Search is its integration with the "perseo-catandtags" plugin, which enables the display of images for categories and tags in the search form, making the search process not only intuitive but also visually appealing.
 
-![immagine](https://github.com/giovannimanetti11/Perseo-Custom-Search/assets/38654312/66da3f10-6959-438e-a25c-7774e7c5f2e1)
+In Perseo Custom Search the keyword search is conducted within a specific paragraph of articles, identified by a unique ID. This feature allows for more targeted and relevant search results, focusing on the content that is most likely to be of interest to the user.
+
+For full functionality, ensure the "perseo-catandtags" plugin is installed and activated. Find it here: [perseo-catandtags](https://github.com/giovannimanetti11/perseo-catandtags).
 
 
 ## Installation
@@ -17,10 +18,9 @@ The plugin dynamically fetches and updates placeholders and categories via AJAX,
 
 ### Customization
 
-In the current release of Perseo Custom Search, categories filtered in the search form are set up through the plugin's backend code, and there isn't a feature available yet to configure them from the WordPress admin panel. 
-Adjusting these settings requires modifications directly in the plugin's files.
-If you need to customize categories or any other plugin settings and are not comfortable making these changes in the code, I am available to assist. 
-Don't hesitate to reach out for support.
+In the current release, categories and the ID of the paragraph where keywords are searched must be configured directly within the plugin's backend code, as there is no feature available yet to configure them from the WordPress admin panel. Adjusting these settings requires manual modifications to the plugin's files.
+
+If you need to customize categories, the specific paragraph ID for keyword searches, or any other plugin settings, and are not comfortable making these changes in the code, please do not hesitate to reach out for support. I am available to assist with custom modifications to ensure the plugin meets your specific needs.
 
 ## Usage
 
