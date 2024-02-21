@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: Perseo Custom Search
- * Plugin URI: https://github.com/giovannimanetti11
+ * Plugin URI: https://github.com/giovannimanetti11/perseo-custom-search
  * Description: Use the shortcode [perseo_custom_search] in the pages or posts where you want the Perseo Custom Search to appear.
- * Version: 1.0
+ * Version: 1.1
  * Author: Giovanni Manetti
  * Author URI: https://github.com/giovannimanetti11
  */
 
-function perseo_custom_search_scripts() {
+ function perseo_custom_search_scripts() {
     wp_enqueue_script('perseo-custom-search-js', plugin_dir_url(__FILE__) . 'functions.js', true);
     wp_enqueue_style('perseo-custom-search-css', plugin_dir_url(__FILE__) . 'style.css');
 }
@@ -16,13 +16,25 @@ add_action('wp_enqueue_scripts', 'perseo_custom_search_scripts');
 
 function perseo_custom_search_shortcode() {
     ob_start();
+    // Categories array
+    // Change with your cat ids and cat names
+    $categories = array(
+        3 => 'Senza glutine',
+        4 => 'Vegan',
+        5 => 'Pesce',
+    );
     ?>
     <div id="custom-search">
         <form id="custom-search-form" action="#" method="post" data-action-url="<?php echo admin_url('admin-ajax.php'); ?>">
-            <div id="category-checkboxes" style="display: flex; flex-wrap: wrap; flex-direction: column;">
-                <label><input type="checkbox" name="category[]" value="3"> Senza glutine</label>
-                <label><input type="checkbox" name="category[]" value="4"> Vegan</label>
-                <label><input type="checkbox" name="category[]" value="5"> Pesce</label>
+            <div id="category-checkboxes">
+                <?php foreach ($categories as $cat_id => $cat_name): 
+                    $image_id = get_term_meta($cat_id, 'perseo-category-image-id', true);
+                    $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'full') : '';
+                ?>
+                <label><input type="checkbox" name="category[]" value="<?php echo esc_attr($cat_id); ?>" checked>
+                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($cat_name); ?>" />
+                </label>
+                <?php endforeach; ?>
             </div>
             <div id="tag-select-container"></div>
             <input type="text" id="keyword1" name="keyword1" placeholder="Ingredient 3, e.g., chili pepper">
@@ -40,6 +52,7 @@ function perseo_custom_search_shortcode() {
     <?php
     return ob_get_clean();
 }
+
 add_shortcode('perseo_custom_search', 'perseo_custom_search_shortcode');
 
 
@@ -102,6 +115,7 @@ function custom_ajax_search() {
             'field' => 'term_id',
             'terms' => $translated_tags,
             'include_children' => false,
+            'operator' => 'AND',
         ];
     }
 
@@ -130,15 +144,37 @@ function custom_ajax_search() {
             $post_thumbnail = get_the_post_thumbnail($post_id, 'full');
             $post_title = get_the_title($post_id);
             $post_link = get_permalink($post_id);
+        
+
             $results_html .= '<a href="' . esc_url($post_link) . '" class="search-result-item">';
             $results_html .= '<div>';
             $results_html .= $post_thumbnail;
             $results_html .= '<p>' . esc_html($post_title) . '</p>';
+
+
+            $post_tags = wp_get_post_tags($post_id);
+            if (!empty($post_tags)) {
+                $tags_html = '<div class="icon-container">';
+                foreach ($post_tags as $tag) {
+                    $image_id = get_term_meta($tag->term_id, 'perseo-category-image-id', true);
+                    if ($image_id) {
+                        $image_url = wp_get_attachment_url($image_id);
+                        if ($image_url) {
+                            $tags_html .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($tag->name) . '" title="' . esc_attr($tag->name) . '" class="tag-image">';
+                        }
+                    }
+                }
+                $tags_html .= '</div>';
+                $results_html .= $tags_html; 
+            }
+
             $results_html .= '</div>';
-            $results_html .= '</a>';
+            $results_html .= '</a>'; 
+
         }
         wp_reset_postdata();
     }
+
 
     // Send the JSON response
     if (empty($results_html)) {
@@ -168,19 +204,31 @@ function get_translations() {
         'placeholderKeyword3' => __('Ingredient 3, e.g., chili pepper', 'custom-search'),
         'searchButtonText' => __('Search', 'custom-search'),
     ];
-    $category_ids = [3, 4, 5];
+    $category_ids = [3, 4, 5]; // Modify with your category ids
     $translated_categories = [];
+
     foreach ($category_ids as $id) {
         $translated_id = apply_filters('wpml_object_id', $id, 'category', true);
         $category = get_category($translated_id);
-        $translated_categories[$id] = $category->name;
+        $image_id = get_term_meta($translated_id, 'perseo-category-image-id', true);
+        $image_url = $image_id ? wp_get_attachment_url($image_id) : 'https://dev2.perseodesign.com/wp-content/plugins/perseo-custom-search/img/perseo200x200.png'; // Change cat default image url
+        $translated_categories[$id] = [
+            'name' => $category->name,
+            'image' => $image_url,
+        ];
     }
     $translations['categories'] = $translated_categories;
-    $tags = get_tags(['hide_empty' => false]); 
+
+    $tag_ids = [32, 33, 34, 35, 36]; // Modify with your tag ids
+
+    $tags = get_tags(['include' => $tag_ids, 'hide_empty' => false]); 
     $tags_data = array_map(function($tag) {
+        $image_id = get_term_meta($tag->term_id, 'perseo-category-image-id', true);
+        $image_url = $image_id ? wp_get_attachment_url($image_id) : 'https://dev2.perseodesign.com/wp-content/plugins/perseo-custom-search/img/perseo200x200.png'; // Change tag default image url
         return [
             'id' => $tag->term_id,
-            'name' => $tag->name
+            'name' => $tag->name,
+            'image' => $image_url,
         ];
     }, $tags);
     $translations['tags'] = $tags_data;
@@ -189,4 +237,3 @@ function get_translations() {
 }
 add_action('wp_ajax_nopriv_get_translations', 'get_translations');
 add_action('wp_ajax_get_translations', 'get_translations');
-

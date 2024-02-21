@@ -9,29 +9,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function fetchTranslationsAndApply() {
-        fetch('https://dev2.perseodesign.com/wp-admin/admin-ajax.php?action=get_translations', {
+        fetch('https://dev2.perseodesign.com/wp-admin/admin-ajax.php?action=get_translations', { // Modificare con url https://tuodominio.com/wp-admin/admin-ajax.php?action=get_translations
             method: 'GET',
             credentials: 'same-origin'
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const t = data.data; 
+                const t = data.data;
                 document.getElementById('keyword1').placeholder = t.placeholderKeyword1;
                 document.getElementById('keyword2').placeholder = t.placeholderKeyword2;
                 document.getElementById('keyword3').placeholder = t.placeholderKeyword3;
                 document.querySelector('#custom-search-form button[type="submit"]').textContent = t.searchButtonText;
 
                 window.translations = t;
-				
-				const categoriesContainer = document.getElementById('category-checkboxes');
-				categoriesContainer.innerHTML = '';
-				Object.keys(t.categories).forEach(catId => {
-					const catName = t.categories[catId];
-					const label = document.createElement('label');
-					label.innerHTML = `<input type="checkbox" name="category[]" value="${catId}"> ${catName}`;
-					categoriesContainer.appendChild(label);
-				});
+                
+                const categoriesContainer = document.getElementById('category-checkboxes');
+                categoriesContainer.innerHTML = '';
+                Object.keys(t.categories).forEach(catId => {
+                    const category = t.categories[catId];
+                    const imageUrl = category.image; 
+                    const catName = category.name;
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="checkbox" name="category[]" value="${catId}" checked><img src="${imageUrl}" alt="${catName}" class="category-image">`;
+                    categoriesContainer.appendChild(label);
+                });
                 
                 console.log("Preparazione per inserire i tag", t.tags);
 
@@ -41,12 +43,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error("Container dei tag non trovato.");
                         return;
                     }
-                    let selectHTML = '<select id="tag-select" name="tags[]" multiple>';
+                    
+                    let checkboxesHTML = '<div class="separator">Peculiarità aggiuntive</div><div class="tags-container">';
                     t.tags.forEach(tag => {
-                        selectHTML += `<option value="${tag.id}">${tag.name}</option>`;
+                        const imageUrl = tag.image; 
+                        checkboxesHTML += `<label class="tag-item"><input type="checkbox" name="tags[]" value="${tag.id}"><img src="${imageUrl}" alt="${tag.name}" class="tag-image"></label>`;
                     });
-                    selectHTML += '</select>';
-                    tagsContainer.innerHTML = selectHTML;
+                    checkboxesHTML += '</div>';
+                    tagsContainer.innerHTML = checkboxesHTML;
                     console.log("Tag inseriti con successo.");
                 } else {
                     console.log("Nessun tag da inserire.");
