@@ -2,9 +2,9 @@
 
 ## Description
 
-Perseo Custom Search is a minimalistic and open-source WordPress plugin designed to enhance the search experience on WordPress websites. This plugin allows users to perform searches by filtering categories, tags, and specific keywords. A distinctive feature of Perseo Custom Search is its integration with the "perseo-catandtags" plugin, which enables the display of images for categories and tags in the search form, making the search process not only intuitive but also visually appealing.
+Perseo Custom Search is a minimalistic and open-source WordPress plugin designed to customize the search experience on WordPress websites. This plugin allows users to perform searches by filtering categories, tags, and specific keywords. A distinctive feature of Perseo Custom Search is its integration with the "perseo-catandtags" plugin, which enables the display of images for categories and tags in the search form, making the search process not only intuitive but also visually appealing.
 
-In Perseo Custom Search the keyword search is conducted within a specific paragraph of articles, identified by a unique ID. This feature allows for more targeted and relevant search results, focusing on the content that is most likely to be of interest to the user.
+In Perseo Custom Search the keyword search is conducted within a specific paragraph of articles, identified by a unique ID. This feature allows for more targeted and relevant search results, focusing on the specific content you want to search in.
 
 For full functionality, ensure the "perseo-catandtags" plugin is installed and activated. Find it here: [perseo-catandtags](https://github.com/giovannimanetti11/perseo-catandtags).
 
